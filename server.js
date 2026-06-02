@@ -1,4 +1,17 @@
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+
+const RIOT_KEY = process.env.RIOT_API_KEY;
+
 const cache = new Map();
+
+app.get("/", (req, res) => {
+  res.send("Backend SoloQ Challenge funcionando");
+});
 
 app.get("/riot/*", async (req, res) => {
   try {
@@ -33,4 +46,10 @@ app.get("/riot/*", async (req, res) => {
       error: err.message
     });
   }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado en puerto ${PORT}`);
 });
