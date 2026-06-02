@@ -1,21 +1,14 @@
-const express = require("express");
-const cors = require("cors");
+const cache = new Map();
 
-const app = express();
-
-app.use(cors());
-
-const RIOT_KEY = process.env.RIOT_API_KEY;
-
-// Ruta de prueba
-app.get("/", (req, res) => {
-  res.send("Backend SoloQ Challenge funcionando");
-});
-
-// Proxy hacia Riot API
 app.get("/riot/*", async (req, res) => {
   try {
     const riotUrl = "https://" + req.params[0];
+
+    const cached = cache.get(riotUrl);
+
+    if (cached && Date.now() - cached.time < 60000) {
+      return res.status(cached.status).json(cached.data);
+    }
 
     const response = await fetch(riotUrl, {
       headers: {
@@ -24,6 +17,12 @@ app.get("/riot/*", async (req, res) => {
     });
 
     const data = await response.json();
+
+    cache.set(riotUrl, {
+      data,
+      status: response.status,
+      time: Date.now()
+    });
 
     res.status(response.status).json(data);
 
