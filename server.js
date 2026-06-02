@@ -1,4 +1,4 @@
-cconst cache = new Map();
+const cache = new Map();
 
 app.get("/riot/*", async (req, res) => {
   try {
