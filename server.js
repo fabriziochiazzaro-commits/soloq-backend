@@ -1,4 +1,4 @@
-const cache = new Map();
+cconst cache = new Map();
 
 app.get("/riot/*", async (req, res) => {
   try {
@@ -33,10 +33,4 @@ app.get("/riot/*", async (req, res) => {
       error: err.message
     });
   }
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado en puerto ${PORT}`);
 });
